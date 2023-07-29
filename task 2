@@ -4,23 +4,23 @@ SIMPLE CALCULATOR:
 #include <iostream>
 #include <vector>
 #include <limits> 
-
+using namespace std;
 int main() {
     int num1, num2;
     char operation;
     bool exit = false;
     bool result_calculated = false;
     double result = 0.0;
-    std::vector<std::string> history;
+   vector<string> history;
 
-    std::cout << "=== Welcome to the Calculator ===\n";
+   cout << "=== Welcome to the Even More Unique Calculator ===\n";
 
     while (!exit) {
         if (result_calculated) {
-            std::cout << "Current Result: " << result << "\n";
-            std::cout << "Do you want to perform another calculation using this result? (y/n): ";
+            cout << "Current Result: " << result << "\n";
+            cout << "Do you want to perform another calculation using this result? (y/n): ";
             char use_result;
-            std::cin >> use_result;
+          cin >> use_result;
 
             if (use_result == 'y' || use_result == 'Y') {
                 num1 = static_cast<int>(result);
@@ -28,34 +28,33 @@ int main() {
                 result_calculated = false;
             }
         } else {
-            std::cout << "Enter the first number: ";
-            std::cin >> num1;
+            cout << "Enter the first number: ";
+            cin >> num1;
 
             // Custom error handling for invalid input
-            while (std::cin.fail()) {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout << "Invalid input. Please enter a valid number: ";
-                std::cin >> num1;
+            while (cin.fail()) {
+                cin.clear();
+              cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                cin >> num1;
             }
         }
 
-        std::cout << "Enter the operation (+, -, *, /, ^, %) or 'q' to quit: ";
-        std::cin >> operation;
+        cout << "Enter the operation (+, -, *, /, ^, %) or 'q' to quit: ";
+        cin >> operation;
 
         if (operation == 'q' || operation == 'Q') {
             exit = true;
         } else {
             if (operation == '+' || operation == '-' || operation == '*' || operation == '/' || operation == '^' || operation == '%') {
-                std::cout << "Enter the second number: ";
-                std::cin >> num2;
+                cout << "Enter the second number: ";
+                cin >> num2;
 
-                
-                while (std::cin.fail()) {
-                    std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    std::cout << "Invalid input. Please enter a valid number: ";
-                    std::cin >> num2;
+                // Custom error handling for invalid input
+                while (cin.fail()) {
+                    cin.clear();
+                 cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    cout << "Invalid input. Please enter a valid number: ";
+                    cin >> num2;
                 }
             }
 
@@ -73,7 +72,7 @@ int main() {
                     if (num2 != 0) {
                         result = static_cast<double>(num1) / num2;
                     } else {
-                        std::cout << "Error: Cannot divide by zero!\n";
+                        cout << "Error: Cannot divide by zero!\n";
                         result_calculated = false;
                         continue;
                     }
@@ -88,28 +87,27 @@ int main() {
                     result = num1 % num2;
                     break;
                 default:
-                    std::cout << "Error: Invalid operation selected!\n";
+                    cout << "Error: Invalid operation selected!\n";
                     result_calculated = false;
                     continue;
             }
 
-            std::cout << "Result: " << result << "\n";
+            cout << "Result: " << result << "\n";
             result_calculated = true;
 
-          
-            std::string history_entry = std::to_string(num1) + " " + operation + " " + std::to_string(num2) + " = " + std::to_string(result);
+           string history_entry = to_string(num1) + " " + operation + " " + to_string(num2) + " = " + to_string(result);
             history.push_back(history_entry);
         }
     }
 
- 
+    
     if (!history.empty()) {
-        std::cout << "\n=== Calculation History ===\n";
-        for (const auto& entry : history) {
-            std::cout << entry << "\n";
+       cout << "\n=== Calculation History ===\n";
+        for (const string& entry : history) {
+            cout << entry << "\n";
         }
     }
 
-    std::cout << "Thank you for using the Calculator!\n";
+    cout << "Thank you for using the Even More Unique Calculator!\n";
     return 0;
 }
