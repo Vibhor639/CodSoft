@@ -1,1 +1,87 @@
+NUMBER GUESSING GAME:
+
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+int main() {
+    
+    std::srand(static_cast<unsigned>(std::time(0)));
+
+    int min_range, max_range;
+    std::cout << "Welcome to the Guess the Number Game!\n";
+    std::cout << "Enter the minimum range value: ";
+    std::cin >> min_range;
+    std::cout << "Enter the maximum range value: ";
+    std::cin >> max_range;
+
+    int total_attempts = 0;
+    int total_games = 0;
+
+    char play_again = 'y';
+    while (play_again == 'y' || play_again == 'Y') {
+       
+        int secret_number = std::rand() % (max_range - min_range + 1) + min_range;
+
+        int attempts;
+        std::cout << "Enter the number of attempts for this round: ";
+        std::cin >> attempts;
+
+        int guess;
+        int attempts_used = 0;
+        bool won = false;
+
+        std::cout << "Guess the number (between " << min_range << " and " << max_range << "). You have " << attempts << " attempts.\n";
+
+        while (attempts_used < attempts) {
+            std::cout << "Attempt " << (attempts_used + 1) << ": ";
+            std::cin >> guess;
+
+            if (guess == secret_number) {
+                std::cout << "Congratulations! You guessed the correct number.\n";
+                won = true;
+                break;
+            } else if (guess < secret_number) {
+                std::cout << "Too low! ";
+            } else {
+                std::cout << "Too high! ";
+            }
+
+            
+            if (attempts_used == attempts / 2) {
+                if (secret_number % 2 == 0) {
+                    std::cout << "Hint: The secret number is even.\n";
+                } else {
+                    std::cout << "Hint: The secret number is odd.\n";
+                }
+            }
+
+          
+            if (attempts_used == attempts - 1) {
+                std::cout << "This is your last attempt!\n";
+            } else {
+                std::cout << "Try again.\n";
+            }
+
+            attempts_used++;
+        }
+
+        total_attempts += attempts_used;
+        total_games++;
+
+      
+        double win_percentage = (static_cast<double>(total_games - (total_attempts - attempts_used)) / total_games) * 100;
+
+        std::cout << "=== Scoreboard ===\n";
+        std::cout << "Total Games Played: " << total_games << "\n";
+        std::cout << "Total Attempts: " << total_attempts << "\n";
+        std::cout << "Win Percentage: " << win_percentage << "%\n";
+
+        std::cout << "Do you want to play again? (y/n): ";
+        std::cin >> play_again;
+    }
+
+    std::cout << "Thank you for playing!\n";
+    return 0;
+}
 
