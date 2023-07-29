@@ -1,0 +1,115 @@
+SIMPLE CALCULATOR:
+
+
+#include <iostream>
+#include <vector>
+#include <limits> 
+
+int main() {
+    int num1, num2;
+    char operation;
+    bool exit = false;
+    bool result_calculated = false;
+    double result = 0.0;
+    std::vector<std::string> history;
+
+    std::cout << "=== Welcome to the Calculator ===\n";
+
+    while (!exit) {
+        if (result_calculated) {
+            std::cout << "Current Result: " << result << "\n";
+            std::cout << "Do you want to perform another calculation using this result? (y/n): ";
+            char use_result;
+            std::cin >> use_result;
+
+            if (use_result == 'y' || use_result == 'Y') {
+                num1 = static_cast<int>(result);
+            } else {
+                result_calculated = false;
+            }
+        } else {
+            std::cout << "Enter the first number: ";
+            std::cin >> num1;
+
+            // Custom error handling for invalid input
+            while (std::cin.fail()) {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "Invalid input. Please enter a valid number: ";
+                std::cin >> num1;
+            }
+        }
+
+        std::cout << "Enter the operation (+, -, *, /, ^, %) or 'q' to quit: ";
+        std::cin >> operation;
+
+        if (operation == 'q' || operation == 'Q') {
+            exit = true;
+        } else {
+            if (operation == '+' || operation == '-' || operation == '*' || operation == '/' || operation == '^' || operation == '%') {
+                std::cout << "Enter the second number: ";
+                std::cin >> num2;
+
+                
+                while (std::cin.fail()) {
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cout << "Invalid input. Please enter a valid number: ";
+                    std::cin >> num2;
+                }
+            }
+
+            switch (operation) {
+                case '+':
+                    result = num1 + num2;
+                    break;
+                case '-':
+                    result = num1 - num2;
+                    break;
+                case '*':
+                    result = num1 * num2;
+                    break;
+                case '/':
+                    if (num2 != 0) {
+                        result = static_cast<double>(num1) / num2;
+                    } else {
+                        std::cout << "Error: Cannot divide by zero!\n";
+                        result_calculated = false;
+                        continue;
+                    }
+                    break;
+                case '^':
+                    result = 1.0;
+                    for (int i = 0; i < num2; ++i) {
+                        result *= num1;
+                    }
+                    break;
+                case '%':
+                    result = num1 % num2;
+                    break;
+                default:
+                    std::cout << "Error: Invalid operation selected!\n";
+                    result_calculated = false;
+                    continue;
+            }
+
+            std::cout << "Result: " << result << "\n";
+            result_calculated = true;
+
+          
+            std::string history_entry = std::to_string(num1) + " " + operation + " " + std::to_string(num2) + " = " + std::to_string(result);
+            history.push_back(history_entry);
+        }
+    }
+
+ 
+    if (!history.empty()) {
+        std::cout << "\n=== Calculation History ===\n";
+        for (const auto& entry : history) {
+            std::cout << entry << "\n";
+        }
+    }
+
+    std::cout << "Thank you for using the Calculator!\n";
+    return 0;
+}
