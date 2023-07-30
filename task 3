@@ -1,0 +1,84 @@
+STUDENT GRADING SYSTEM:
+
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+using namespace std;
+struct Student {
+    string name;
+    double grade;
+    char letterGrade;
+};
+
+char getLetterGrade(double numericGrade) {
+    if (numericGrade >= 90) {
+        return 'A';
+    } else if (numericGrade >= 80) {
+        return 'B';
+    } else if (numericGrade >= 70) {
+        return 'C';
+    } else if (numericGrade >= 60) {
+        return 'D';
+    } else {
+        return 'F';
+    }
+}
+
+int main() {
+   
+
+    vector<Student> students;
+    int numStudents;
+
+    cout << "Welcome to the Student Grade Management System!" << endl;
+    cout << "How many students do you want to manage? ";
+    cin >> numStudents;
+
+    for (int i = 0; i < numStudents; ++i) {
+        Student s;
+        cout << "\nEnter the name of student " << i + 1 << ": ";
+        cin.ignore(); // Ignore any leftover newline character
+        getline(cin, s.name);
+        cout << "Enter the grade for " << s.name << ": ";
+        cin >> s.grade;
+        s.letterGrade = getLetterGrade(s.grade);
+        students.push_back(s);
+    }
+
+    map<char, string> gradeMessages;
+    gradeMessages['A'] = "Excellent work! Keep it up!";
+    gradeMessages['B'] = "Great job! You're doing well.";
+    gradeMessages['C'] = "Good effort! Keep improving.";
+    gradeMessages['D'] = "You passed, but there's room for improvement.";
+    gradeMessages['F'] = "You'll get there! Keep trying.";
+
+    double sumGrades = 0.0;
+    double highestGrade = students[0].grade;
+    double lowestGrade = students[0].grade;
+
+    for (int i = 0; i < numStudents; ++i) {
+        sumGrades += students[i].grade;
+        if (students[i].grade > highestGrade) {
+            highestGrade = students[i].grade;
+        }
+        if (students[i].grade < lowestGrade) {
+            lowestGrade = students[i].grade;
+        }
+    }
+
+    double averageGrade = sumGrades / numStudents;
+
+    cout << "\n--- Grade Summary ---" << endl;
+    for (int i = 0; i < numStudents; ++i) {
+        cout << students[i].name << ": " << students[i].grade << " (" << students[i].letterGrade << ")" << endl;
+        cout << "Message: " << gradeMessages[students[i].letterGrade] << endl;
+    }
+    cout << "---------------------" << endl;
+    cout << "Average Grade: " << averageGrade << endl;
+    cout << "Highest Grade: " << highestGrade << endl;
+    cout << "Lowest Grade: " << lowestGrade << endl;
+
+    return 0;
+}
