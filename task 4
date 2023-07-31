@@ -1,0 +1,112 @@
+WORD COUNT:
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <unordered_set>
+
+using namespace std;
+
+
+unordered_set<string> createStopWordsSet() {
+    unordered_set<string> stopWordsSet;
+    stopWordsSet.insert("the");
+    stopWordsSet.insert("and");
+    stopWordsSet.insert("is");
+    stopWordsSet.insert("in");
+    stopWordsSet.insert("it");
+    stopWordsSet.insert("an");
+    stopWordsSet.insert("of");
+    stopWordsSet.insert("to");
+    stopWordsSet.insert("for");
+    stopWordsSet.insert("on");
+    stopWordsSet.insert("with");
+    stopWordsSet.insert("as");
+    stopWordsSet.insert("by");
+    return stopWordsSet;
+}
+
+
+string toLowerCase(const string& input) {
+    string output = input;
+    transform(output.begin(), output.end(), output.begin(), ::tolower);
+    return output;
+}
+
+
+int countTotalWordsInFile(const string& filename) {
+    ifstream file(filename);
+    if (!file) {
+        cerr << "Error opening the file. Looks like someone spilled coffee on it!" << endl;
+        return -1;
+    }
+
+    int totalWordCount = 0;
+    string line;
+    while (getline(file, line)) {
+        istringstream iss(line);
+        string word;
+        while (iss >> word) {
+            ++totalWordCount;
+        }
+    }
+
+    return totalWordCount;
+}
+
+
+int countUniqueWordsInFile(const string& filename, const unordered_set<string>& stopWordsSet) {
+    ifstream file(filename);
+    if (!file) {
+        cerr << "Error opening the file. Looks like someone spilled coffee on it!💀" << endl;
+        return -1;
+    }
+
+    int uniqueWordCount = 0;
+    string line;
+    while (getline(file, line)) {
+        istringstream iss(line);
+        string word;
+        while (iss >> word) {
+         
+            word = toLowerCase(word);
+         
+            if (stopWordsSet.find(word) == stopWordsSet.end()) {
+                ++uniqueWordCount;
+            }
+        }
+    }
+
+    return uniqueWordCount;
+}
+
+int main() {
+    
+    unordered_set<string> stopWordsSet = createStopWordsSet();
+
+    cout << "----------------------------------------" << endl;
+    cout << "Welcome, fellow 4th-semester CSE student!" << endl;
+    cout << "Prepare to witness the power of word counting!" << endl;
+    cout << "----------------------------------------" << endl;
+
+    cout << "Enter the file name (Don't worry, no coding assignments here!): ";
+    string filename;
+    cin >> filename;
+
+    int totalWordCount = countTotalWordsInFile(filename);
+    int uniqueWordCount = countUniqueWordsInFile(filename, stopWordsSet);
+    if (totalWordCount >= 0 && uniqueWordCount >= 0) {
+        cout << "----------------------------------------" << endl;
+        cout << "Total word count in the file: " << totalWordCount << endl;
+        cout << "Unique word count in the file: " << uniqueWordCount << endl;
+    }
+
+    cout << "----------------------------------------" << endl;
+    cout << "Keep learning, keep coding, and have a fantastic day ahead🤘!" << endl;
+    cout<<"THANK YOU!!!!😊"<<endl;
+    cout << "----------------------------------------" << endl;
+
+    return 0;
+}
