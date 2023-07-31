@@ -1,0 +1,141 @@
+MOVIE BOOKING SYSTEM:
+
+#include <iostream>
+#include <vector>
+#include <iomanip>
+#include <limits>
+
+using namespace std;
+
+
+const int NUM_ROWS = 5;
+const int NUM_COLS = 10;
+const double TICKET_PRICE = 10.0;
+
+
+void displaySeats(const vector<vector<bool> >& seats) {
+    cout << "  ";
+    for (int col = 1; col <= NUM_COLS; ++col) {
+        cout << setw(3) << col;
+    }
+    cout << endl;
+
+    for (int row = 0; row < NUM_ROWS; ++row) {
+        cout << char('A' + row) << " ";
+        for (int col = 0; col < NUM_COLS; ++col) {
+            char status = seats[row][col] ? 'X' : '-';
+            cout << setw(3) << status;
+        }
+        cout << endl;
+    }
+}
+
+
+bool isSeatAvailable(const vector<vector<bool> >& seats, int row, int col) {
+    return !seats[row][col];
+}
+
+
+void bookSeat(vector<vector<bool> >& seats, int row, int col) {
+    seats[row][col] = true;
+    cout << "Seat booked successfully. Get ready for a cinematic rollercoaster!" << endl;
+}
+
+
+void cancelBooking(vector<vector<bool> >& seats, int row, int col) {
+    seats[row][col] = false;
+    cout << "Booking canceled successfully. We hope to see you again soon for another silver screen experience!" << endl;
+}
+
+
+double calculateTotalCost(const vector<vector<bool> >& seats) {
+    double totalCost = 0;
+    for (int row = 0; row < NUM_ROWS; ++row) {
+        for (int col = 0; col < NUM_COLS; ++col) {
+            if (seats[row][col]) {
+                totalCost += TICKET_PRICE;
+            }
+        }
+    }
+    return totalCost;
+}
+
+int main() {
+   
+    vector<vector<bool> > seats(NUM_ROWS, vector<bool>(NUM_COLS, false));
+
+    cout << "----------------------------------------" << endl;
+    cout << "Welcome, Movie Buffs! 4th Sem CSE Edition" << endl;
+    cout << "Get ready to experience the magic of cinema!" << endl;
+    cout << "----------------------------------------" << endl;
+
+    char choice;
+    do {
+        cout << "1. View movie listings" << endl;
+        cout << "2. Book a seat" << endl;
+        cout << "3. Cancel booking" << endl;
+        cout << "4. Calculate total cost" << endl;
+        cout << "5. Exit" << endl;
+        cout << "Enter your choice (1/2/3/4/5): ";
+        cin >> choice;
+
+        switch (choice) {
+            case '1':
+                cout << "Movie Listings: Movie A, Movie B, Movie C" << endl;
+                break;
+            case '2':
+                cout << "Enter the seat (e.g., A3): ";
+                char row;
+                int col;
+                cin >> row >> col;
+                row = toupper(row);
+
+                if (row >= 'A' && row < 'A' + NUM_ROWS && col >= 1 && col <= NUM_COLS) {
+                    int rowIndex = row - 'A';
+                    col -= 1; 
+                    if (isSeatAvailable(seats, rowIndex, col)) {
+                        bookSeat(seats, rowIndex, col);
+                    } else {
+                        cout << "Sorry, the seat is already booked. Please choose another seat to embark on your cinematic journey!" << endl;
+                    }
+                } else {
+                    cout << "Invalid seat selection. Please enter a valid seat (e.g., A3)." << endl;
+                }
+                break;
+            case '3':
+                cout << "Enter the seat to cancel (e.g., A3): ";
+                cin >> row >> col;
+                row = toupper(row);
+
+                if (row >= 'A' && row < 'A' + NUM_ROWS && col >= 1 && col <= NUM_COLS) {
+                    int rowIndex = row - 'A';
+                    col -= 1;
+                    if (!isSeatAvailable(seats, rowIndex, col)) {
+                        cancelBooking(seats, rowIndex, col);
+                    } else {
+                        cout << "Sorry, the seat is not booked. No worries, there are still plenty of seats for your movie adventure!" << endl;
+                    }
+                } else {
+                    cout << "Invalid seat selection. Please enter a valid seat (e.g., A3)." << endl;
+                }
+                break;
+            case '4':
+                cout << fixed << setprecision(2);
+                cout << "Total cost of your epic movie experience: $" << calculateTotalCost(seats) << endl;
+                break;
+            case '5':
+                cout << "Thank you for exploring the Movie Ticket Booking System! Wishing you reel happiness and a bug-free life ahead!" << endl;
+                break;
+            default:
+                cout << "Invalid choice. Please select a valid option to continue your movie adventure!" << endl;
+                break;
+        }
+
+  
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        cout << "----------------------------------------" << endl;
+    } while (choice != '5');
+
+    return 0;
+}
